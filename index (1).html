@@ -62,10 +62,19 @@
         <button onclick="restartGame()">Restart</button>
     </div>
 
+    <!-- Background Audio -->
+    <audio id="backgroundAudio" loop>
+        <source src="your-background-audio.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
     <script>
         const board = document.getElementById("board");
         const pauseBtn = document.getElementById("pauseBtn");
         const winPopup = document.getElementById("winPopup");
+        const backgroundAudio = document.getElementById("backgroundAudio");
+        backgroundAudio.volume = 0.3; // lower volume so it's not distracting
+
         const ctx = board.getContext("2d");
 
         const boardWidth = 500;
@@ -223,6 +232,13 @@
             if (e.key === "ArrowLeft") paddle.dx = -paddle.speed;
             else if (e.key === "ArrowRight") paddle.dx = paddle.speed;
             else if (e.code === "Space" && gameOver) restartGame();
+
+            // Start audio on first key press (browser requirement workaround)
+            if (backgroundAudio.paused) {
+                backgroundAudio.play().catch(err => {
+                    console.warn("Autoplay failed:", err);
+                });
+            }
         }
 
         function keyUp(e) {
@@ -237,6 +253,7 @@
             ball.x = boardWidth / 2;
             ball.y = boardHeight / 2;
             createBricks();
+            backgroundAudio.play();
             update();
         }
 
