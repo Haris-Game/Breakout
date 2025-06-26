@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Breakout Game</title>
+    <title>Breakout Game - Final Version</title>
     <style>
         body {
             text-align: center;
@@ -61,20 +61,11 @@
         <h2>You Win!</h2>
         <button onclick="restartGame()">Restart</button>
     </div>
-
-    <!-- Background Audio -->
-    <audio id="backgroundAudio" loop>
-        <source src="your-background-audio.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-
+    <audio src="breakoutmusic.mp3"></audio>
     <script>
         const board = document.getElementById("board");
         const pauseBtn = document.getElementById("pauseBtn");
         const winPopup = document.getElementById("winPopup");
-        const backgroundAudio = document.getElementById("backgroundAudio");
-        backgroundAudio.volume = 0.3; // lower volume so it's not distracting
-
         const ctx = board.getContext("2d");
 
         const boardWidth = 500;
@@ -118,7 +109,6 @@
         const hitPaddleSound = new Audio("hit-paddle.wav");
         const hitBrickSound = new Audio("hit-brick.mp3");
         const gameOverSound = new Audio("game-over.wav");
-        const backgroundAudio = new Audio("breakoutmusic.mp3");
 
         function createBricks() {
             bricks = [];
@@ -233,13 +223,6 @@
             if (e.key === "ArrowLeft") paddle.dx = -paddle.speed;
             else if (e.key === "ArrowRight") paddle.dx = paddle.speed;
             else if (e.code === "Space" && gameOver) restartGame();
-
-            // Start audio on first key press (browser requirement workaround)
-            if (backgroundAudio.paused) {
-                backgroundAudio.play().catch(err => {
-                    console.warn("Autoplay failed:", err);
-                });
-            }
         }
 
         function keyUp(e) {
@@ -254,7 +237,6 @@
             ball.x = boardWidth / 2;
             ball.y = boardHeight / 2;
             createBricks();
-            backgroundAudio.play();
             update();
         }
 
